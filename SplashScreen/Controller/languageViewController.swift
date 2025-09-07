@@ -31,6 +31,8 @@ class languageViewController: UIViewController {
         
         tableView.register(UINib(nibName: "languageTableViewCell", bundle: nil), forCellReuseIdentifier: "languageTableViewCell")
         
+        //MARK: save the selected language
+        
         if let savedCode = UserDefaults.standard.string(forKey: "appLanguage") {
                self.selectedLangCode = savedCode
                if let row = languages.firstIndex(where: { $0.code == savedCode }) {
@@ -41,10 +43,14 @@ class languageViewController: UIViewController {
     
     
     @IBAction func btnDone(_ sender: UIButton) {
+        
+        //set language code
         LocalizationHelper.shared.setLanguage(code: selectedLangCode)
 
+        //Save the language code
         UserDefaults.standard.set(selectedLangCode, forKey: "appLanguage")
         UserDefaults.standard.synchronize()
+        
         if isFromSplash{
             setLanguage(status: true)
             let intro1VC = self.storyboard?.instantiateViewController(withIdentifier: "Intro1ViewController") as? Intro1ViewController
